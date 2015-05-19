@@ -18,7 +18,7 @@ RUN groupadd -r wildfly -g 1000 && useradd -u 1000 -r -g wildfly -m -d /opt/jbos
 WORKDIR /opt/jboss
 
 # Specify the user which should be used to execute all commands below
-USER jboss
+USER wildfly
 
 
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
