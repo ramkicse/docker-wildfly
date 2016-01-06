@@ -3,7 +3,7 @@ FROM ramkicse/jdk
 MAINTAINER Ramki <ramkicse@gmail.com>
 
 # Set the WILDFLY_VERSION env variable
-ENV WILDFLY_VERSION 8.2.0.Final
+ENV WILDFLY_VERSION 9.0.2.Final 
 
 
 
@@ -12,6 +12,7 @@ ENV WILDFLY_VERSION 8.2.0.Final
 # The user ID 1000 is the default for the first "regular" user on RHEL,
 # so there is a high chance that this ID will be equal to the current user
 # making it easier to use volumes (no permission issues)
+
 RUN groupadd -r wildfly -g 1000 && useradd -u 1000 -r -g wildfly -m -d /opt/jboss -s /sbin/nologin -c "wildfly user" wildfly
 
 # Set the working directory to jboss' user home directory
@@ -29,14 +30,15 @@ RUN cd $HOME && curl http://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-
 # Set the JBOSS_HOME env variable
 ENV JBOSS_HOME /opt/jboss/wildfly
 
+#copy any war file for deployment
+#COPY App.war /opt/jboss/wildfly/standalone/deployments/
+
 # Expose the ports we're interested in
 EXPOSE 8080
 
 EXPOSE 9990
 
-WORKDIR /opt/jboss/wildfly/bin
-
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
-CMD ["./standalone.sh", "-b", "0.0.0.0","-bmanagement", "0.0.0.0"]
-
+#
+CMD ["/opt/jboss/wildfly/bin/standalone.sh","-b=0.0.0.0"]
